@@ -12,4 +12,14 @@ export default defineConfig({
   build: {
     assetsInclude: ["**/*.png", "**/*.jpg", "**/*.jpeg"], // Ensure all image types are processed
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
