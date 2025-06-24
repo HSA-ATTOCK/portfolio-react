@@ -1,0 +1,475 @@
+/* Portfolio Section */
+.portfolio {
+  min-height: auto;
+  padding: 10rem 4% 12rem;
+  /* background: var(--second-bg-color); */
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio h2 {
+  margin-bottom: 4rem;
+  text-align: center;
+  font-size: 4.5rem;
+  position: relative;
+  color: var(--text-color);
+}
+
+.portfolio h2 span {
+  color: var(--main-color);
+}
+
+.portfolio h2::after {
+  content: "";
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--main-color);
+  border-radius: 2px;
+}
+
+/* Slider Container */
+.portfolio-slider {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5rem;
+  overflow: hidden;
+}
+
+/* Portfolio Grid */
+.portfolio-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: center;
+  gap: 3rem;
+  margin-top: 4rem;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.portfolio-container.transitioning {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+/* Portfolio Box */
+.portfolio-box {
+  position: relative;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 25rem;
+  transition: all 0.4s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.portfolio-box.empty-box {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Project Image */
+.portfolio-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+    filter 0.4s ease-out;
+  transform: translateZ(0);
+}
+
+/* Project Preview (visible by default) */
+.project-preview {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  z-index: 2;
+  text-align: left;
+  transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: translateZ(0);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(5px);
+}
+
+.project-preview h4 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--white-color);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: inherit;
+}
+
+.project-preview .tech-stack {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  transition: inherit;
+}
+
+.project-preview .tech-stack span {
+  font-size: 1.1rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  color: var(--white-color);
+  backdrop-filter: blur(5px);
+  transition: inherit;
+}
+
+/* Hover Effects */
+.portfolio-box:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-box:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.7);
+}
+
+/* Overlay Layer (shown on hover) */
+.portfolio-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.1), var(--main-color));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 3rem;
+  transform: translateY(100%);
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  opacity: 0;
+  z-index: 3;
+  will-change: transform, opacity;
+}
+
+.portfolio-box:hover .portfolio-layer {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-box:hover .project-preview {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.portfolio-layer h4 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--white-color);
+  margin-bottom: 1rem;
+}
+
+.portfolio-layer p {
+  font-size: 1.4rem;
+  margin: 0.3rem 0 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  max-height: 8rem;
+  overflow-y: auto;
+  padding: 0 1rem;
+}
+
+.portfolio-layer p::-webkit-scrollbar {
+  width: 5px;
+}
+
+.portfolio-layer p::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+.portfolio-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.portfolio-layer a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  background: var(--text-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  transform: translateZ(0);
+}
+
+.portfolio-layer a:hover {
+  background: var(--white-color);
+  transform: scale(1.1);
+}
+
+.portfolio-layer a i {
+  font-size: 2.2rem;
+  color: var(--second-bg-color);
+}
+
+/* Slider Navigation */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--white-color);
+  font-size: 2.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transform-style: preserve-3d;
+}
+
+.slider-btn:hover:not(:disabled) {
+  background: var(--main-color);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.slider-btn.left {
+  left: 0;
+}
+
+.slider-btn.right {
+  right: 0;
+}
+
+/* Slider Dots */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  gap: 1rem;
+}
+
+.slider-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0;
+}
+
+.slider-dots .dot:hover:not(.active) {
+  transform: scale(1.1);
+}
+
+.slider-dots .dot.active {
+  background: var(--main-color);
+  transform: scale(1.2);
+}
+
+.slider-dots .dot:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .portfolio {
+    padding: 8rem 4% 10rem;
+  }
+
+  .portfolio-slider {
+    padding: 0 4rem;
+  }
+
+  .portfolio-container {
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .portfolio h2 {
+    font-size: 4rem;
+  }
+
+  .portfolio-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .portfolio-layer h4 {
+    font-size: 2.2rem;
+  }
+
+  .portfolio-layer p {
+    font-size: 1.3rem;
+  }
+
+  .slider-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .portfolio {
+    padding: 6rem 4% 8rem;
+  }
+
+  .portfolio h2 {
+    font-size: 3.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .portfolio-slider {
+    padding: 0 2rem;
+  }
+
+  .portfolio-container {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 4rem auto 0;
+    gap: 2rem;
+  }
+
+  .portfolio-box {
+    height: 22rem;
+  }
+
+  .project-preview h4 {
+    font-size: 1.8rem;
+  }
+
+  .slider-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .portfolio {
+    padding: 5rem 4% 6rem;
+  }
+
+  .portfolio h2 {
+    margin-top: 3rem;
+    font-size: 3rem;
+  }
+
+  .portfolio-slider {
+    padding: 0 1rem;
+  }
+
+  .portfolio-layer h4 {
+    font-size: 2rem;
+  }
+
+  .portfolio-layer p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .portfolio-layer a {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .portfolio-layer a i {
+    font-size: 1.8rem;
+  }
+
+  .project-preview {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    padding: 1rem;
+  }
+
+  .project-preview h4 {
+    font-size: 1.6rem;
+  }
+
+  .project-preview .tech-stack span {
+    font-size: 1rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .slider-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+  }
+
+  .slider-dots .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Animation Enhancements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* .portfolio-container > * {
+  animation: fadeIn 0.6s ease-out forwards;
+} */
+
+.portfolio-container > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.portfolio-container > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.portfolio-container > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Performance Optimizations */
+.portfolio-box,
+.slider-btn,
+.portfolio-layer {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}

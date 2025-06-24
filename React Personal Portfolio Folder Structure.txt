@@ -1,0 +1,15 @@
+React Personal Portfolio Folder Structure
+
+src/
+├── assets/
+│   └── (images from your original repo)
+├── components/
+│   └── Header.jsx
+│   └── About.jsx
+│   └── Services.jsx
+│   └── Projects.jsx
+│   └── Contact.jsx
+│   └── Footer.jsx
+├── App.jsx
+├── main.jsx
+└── index.css (move your styles here)

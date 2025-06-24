@@ -1,0 +1,121 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 9%;
+  background: var(--bg-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Desktop Navigation */
+.desktop-nav a {
+  font-size: 1.7rem;
+  color: var(--text-color);
+  font-weight: 500;
+  margin-left: 3.5rem;
+  transition: 0.3s;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a.active {
+  color: var(--main-color);
+}
+
+/* Mobile Navigation Button (hidden by default) */
+.mobile-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 101;
+  /* margin-left: 25rem; */
+}
+
+.mobile-menu-button .bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: var(--text-color);
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+/* Mobile Navigation Menu (hidden by default) */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 70%;
+  height: 100vh;
+  background: var(--bg-color);
+  padding-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: 0.5s;
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.mobile-nav.open {
+  right: 0;
+}
+
+.mobile-nav a {
+  font-size: 2rem;
+  color: var(--text-color);
+  font-weight: 500;
+  margin: 1.5rem 0;
+  transition: 0.3s;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a.active {
+  color: var(--main-color);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .mobile-menu-button.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .mobile-menu-button.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-button.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .mobile-nav {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: none;
+  }
+}
