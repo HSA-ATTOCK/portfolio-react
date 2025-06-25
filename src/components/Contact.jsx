@@ -63,13 +63,13 @@ const Contact = () => {
 
   return (
     <section className="contact relative" id="contact">
-      {/* Vortex Background */}
-      <div className="absolute inset-0 z-0">
+      {/* Vortex Background - Hidden on Mobile */}
+      <div className="absolute inset-0 z-0 hidden md:block">
         <Vortex
           backgroundColor="black"
           rangeY={800}
           particleCount={500}
-          baseHue={220} // Different hue for contact section
+          baseHue={220}
           className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
         />
       </div>
