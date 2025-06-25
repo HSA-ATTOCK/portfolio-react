@@ -156,7 +156,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch("https://graceful-squirrel-88a190.netlify.app/api/send-email", {
+      const response = await fetch("https://portfolio-email-server-juzd.onrender.com/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
