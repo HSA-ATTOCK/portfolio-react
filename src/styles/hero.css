@@ -318,6 +318,7 @@
   }
 
   .hero-image {
+    margin-top:1rem;
     width: 240px;
     height: 240px;
   }
