@@ -40,7 +40,6 @@
 }
 
 .hero-image {
-  margin-top:3rem;
   flex: 0 0 auto;
   width: 350px;
   height: 350px;
@@ -318,6 +317,7 @@
   }
 
   .hero-image {
+    margin-top:3rem;
     width: 240px;
     height: 240px;
   }
