@@ -6,11 +6,13 @@ import { AnimatedPinDemo } from "../components/3d-pin-demo";
 import loginimg from "/assets/img/work5.jpg";
 import paraimg from "/assets/img/work4.png";
 import chatimg from "/assets/img/work3.png";
+import privchat from "/assets/img/work9.png";
 import vidchatimg from "/assets/img/work2.jpg";
 import emaildesimg from "/assets/img/work1.jpeg";
 import taskimg from "/assets/img/work6.png";
 import resumeimg from "/assets/img/work7.jpg";
-import portdesimg from "/assets/img/work8.jpeg";
+import portdesimg from "/assets/img/work8.png";
+import persoport from "/assets/img/work10.jpeg";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,6 +24,32 @@ const Portfolio = () => {
 
   const projects = [
     {
+      title: "React Resume Builder",
+      description: "Interactive resume builder with real-time preview.",
+      techStack: ["React", "CSS3", "Node.js"],
+      previewImage: resumeimg,
+      githubLink: "https://github.com/HSA-ATTOCK/react-resume-builder",
+      demo: "https://hsaresumebuilder.vercel.app/",
+    },
+    {
+      title: "Personal Portfolio",
+      description:
+        "Responsive portfolio with project showcase and contact form.",
+      techStack: ["HTML5", "CSS3", "JavaScript", "Node.js"],
+      previewImage: persoport,
+      githubLink: "https://github.com/HSA-ATTOCK/personal-portfolio-hsa",
+      demo: "https://hsaportfolio.vercel.app/",
+    },
+    {
+      title: "React Task Manager",
+      description:
+        "Productivity app combining Pomodoro timer with task management.",
+      techStack: ["React", "CSS3", "Node.js"],
+      previewImage: taskimg,
+      githubLink: "https://github.com/HSA-ATTOCK/react-pomodoro-task-manager",
+      demo: "https://hsataskmanager.vercel.app/",
+    },
+    {
       title: "Figma Portfolio Design",
       description: "Modern portfolio website UI design created in Figma.",
       techStack: ["Figma"],
@@ -29,23 +57,6 @@ const Portfolio = () => {
       githubLink:
         "https://github.com/HSA-ATTOCK/figma-portfolio-website-design",
       demo: "https://www.figma.com/design/Fst2wbQoHDckGwE3DAEhm3/Portfolio-Website-Design?node-id=0-1&t=NusY3NkoD3bibIuc-1",
-    },
-    {
-      title: "React Resume Builder",
-      description: "Interactive resume builder with real-time preview.",
-      techStack: ["React", "CSS", "Node.js"],
-      previewImage: resumeimg,
-      githubLink: "https://github.com/HSA-ATTOCK/react-resume-builder",
-      demo: "https://hsaresumebuilder.vercel.app/",
-    },
-    {
-      title: "React Task Manager",
-      description:
-        "Productivity app combining Pomodoro timer with task management.",
-      techStack: ["React", "CSS", "Node.js"],
-      previewImage: taskimg,
-      githubLink: "https://github.com/HSA-ATTOCK/react-pomodoro-task-manager",
-      demo: "https://hsataskmanager.vercel.app/",
     },
     {
       title: "Figma Email Design",
@@ -58,15 +69,24 @@ const Portfolio = () => {
     {
       title: "WebRTC Video Chat",
       description: "Minimal peer-to-peer video chat application.",
-      techStack: ["HTML", "JavaScript", "WebRTC"],
+      techStack: ["HTML5", "JavaScript", "Node.js", "WebRTC"],
       previewImage: vidchatimg,
       githubLink: "https://github.com/HSA-ATTOCK/Minimal-WebRTC-Video-Chat",
       demo: "https://video-chat-uf11.onrender.com/",
     },
     {
+      title: "Private Group Chat App",
+      description:
+        "Real-time group chat with login, emojis, and typing indicators.",
+      techStack: ["JavaScript", "Node.js", "Express", "Socket.io"],
+      previewImage: privchat,
+      githubLink: "https://github.com/HSA-ATTOCK/private-group-chat-app",
+      demo: "https://private-group-chat-app.onrender.com/",
+    },
+    {
       title: "Chat App",
       description: "Real-time messaging application with Firebase.",
-      techStack: ["HTML", "CSS", "JavaScript", "Firebase"],
+      techStack: ["HTML5", "CSS3", "JavaScript", "Node.js", "Firebase"],
       previewImage: chatimg,
       githubLink: "https://github.com/HSA-ATTOCK/chat-app",
       demo: "https://chat-app-f1hs.onrender.com/",
@@ -74,7 +94,7 @@ const Portfolio = () => {
     {
       title: "Paragraph Analyzer",
       description: "Text analysis tool for word and character counting.",
-      techStack: ["HTML", "CSS", "JavaScript"],
+      techStack: ["HTML5", "CSS3", "JavaScript"],
       previewImage: paraimg,
       githubLink: "https://github.com/HSA-ATTOCK/paragraph-analyzer",
       demo: "https://hsa-attock.github.io/paragraph-analyzer/",
@@ -82,7 +102,7 @@ const Portfolio = () => {
     {
       title: "Login Form",
       description: "Form with real-time validation and error feedback.",
-      techStack: ["HTML", "CSS", "JavaScript"],
+      techStack: ["HTML5", "CSS3", "JavaScript"],
       previewImage: loginimg,
       githubLink: "https://github.com/HSA-ATTOCK/login-form-validation",
       demo: "https://hsa-attock.github.io/login-form-validation/",
