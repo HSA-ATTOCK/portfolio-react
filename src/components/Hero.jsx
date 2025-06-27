@@ -62,6 +62,14 @@ const Hero = () => {
         >
           <i className="bx bxl-github"></i>
         </a>
+        <a
+          href="https://drive.google.com/file/d/1I9xNAQhNJNsJNiTZbO6cHE7bSvtR9Dyp/view?usp=drivesdk"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="CV"
+        >
+          <i className="bx bx-file"></i>
+        </a>
       </div>
     </section>
   );
