@@ -13,6 +13,7 @@ import taskimg from "/assets/img/work6.png";
 import resumeimg from "/assets/img/work7.jpg";
 import portdesimg from "/assets/img/work8.png";
 import persoport from "/assets/img/work10.jpeg";
+import charityimg from "/assets/img/work11.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,9 +25,17 @@ const Portfolio = () => {
 
   const projects = [
     {
+      title: "React Charity Website for Upwork Client",
+      description: "Interactive resume builder with real-time preview.",
+      techStack: ["React", "CSS3", "Node.js", "Express"],
+      previewImage: charityimg,
+      githubLink: "https://github.com/HSA-ATTOCK/react-charity-website",
+      demo: "https://mustafacharity.vercel.app/",
+    },
+    {
       title: "React Resume Builder",
       description: "Interactive resume builder with real-time preview.",
-      techStack: ["React", "CSS3", "Node.js"],
+      techStack: ["React", "CSS3", "Node.js", "Express"],
       previewImage: resumeimg,
       githubLink: "https://github.com/HSA-ATTOCK/react-resume-builder",
       demo: "https://hsaresumebuilder.vercel.app/",
@@ -35,7 +44,7 @@ const Portfolio = () => {
       title: "Personal Portfolio",
       description:
         "Responsive portfolio with project showcase and contact form.",
-      techStack: ["HTML5", "CSS3", "JavaScript", "Node.js"],
+      techStack: ["HTML5", "CSS3", "JavaScript", "Node.js", "Express"],
       previewImage: persoport,
       githubLink: "https://github.com/HSA-ATTOCK/personal-portfolio-hsa",
       demo: "https://hsaportfolio.vercel.app/",
@@ -44,7 +53,7 @@ const Portfolio = () => {
       title: "React Task Manager",
       description:
         "Productivity app combining Pomodoro timer with task management.",
-      techStack: ["React", "CSS3", "Node.js"],
+      techStack: ["React", "CSS3", "Node.js", "Express"],
       previewImage: taskimg,
       githubLink: "https://github.com/HSA-ATTOCK/react-pomodoro-task-manager",
       demo: "https://hsataskmanager.vercel.app/",
@@ -86,7 +95,14 @@ const Portfolio = () => {
     {
       title: "Chat App",
       description: "Real-time messaging application with Firebase.",
-      techStack: ["HTML5", "CSS3", "JavaScript", "Node.js", "Firebase"],
+      techStack: [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Node.js",
+        "Express",
+        "Firebase",
+      ],
       previewImage: chatimg,
       githubLink: "https://github.com/HSA-ATTOCK/chat-app",
       demo: "https://chat-app-f1hs.onrender.com/",
