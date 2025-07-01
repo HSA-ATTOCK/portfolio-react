@@ -135,7 +135,7 @@ const Hero = () => {
           <i className="bx bxl-github"></i>
         </a>
         <a
-          href="https://drive.google.com/file/d/1I9xNAQhNJNsJNiTZbO6cHE7bSvtR9Dyp/view?usp=drivesdk"
+          href="https://drive.google.com/file/d/1di9rasT37Ppg5Hm6mVdVHXpY2p_bbAAC/view?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="CV"

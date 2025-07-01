@@ -24,9 +24,9 @@ const Skills = () => {
             <div className="skill" key={index}>
               <div className="skill-header">
                 <h3>{skill.name}</h3>
-                <span>{skill.level}%</span>
+                {/* <span>{skill.level}%</span> */}
               </div>
-              <div className="progress-bar">
+              {/* <div className="progress-bar">
                 <div
                   className="progress"
                   style={{ width: `${skill.level}%` }}
@@ -34,7 +34,7 @@ const Skills = () => {
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
