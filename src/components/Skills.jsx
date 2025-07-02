@@ -21,7 +21,7 @@ const Skills = () => {
       title: "Back-end",
       skills: [
         { name: "Node.js", icon: <FaNodeJs />, color: "#339933" },
-        { name: "Express", icon: <BsServer />, color: "#000000" },
+        { name: "Express", icon: <BsServer />, color: "#0198D6" },
         { name: "MongoDB", icon: <SiMongodb />, color: "#47A248" },
       ],
     },
