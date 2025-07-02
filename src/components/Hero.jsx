@@ -62,39 +62,75 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="hero-image">
+        <div className="hero-image" style={{ position: "relative" }}>
+          {/* SVG blob with image mask and neon effect */}
           <svg
             className="neon-blob-svg"
-            viewBox="0 0 200 200"
+            viewBox="0 0 295 355"
             xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
+            style={{ position: "absolute", zIndex: 1 }}
           >
             <defs>
-              <clipPath id="blobClip" clipPathUnits="userSpaceOnUse">
+              {/* Neon Glow Filter */}
+              <filter id="neonGlow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              {/* Image mask using your Figma blob shape */}
+              <mask
+                id="blobImageMask"
+                style={{ maskType: "alpha" }}
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="295"
+                height="355"
+              >
                 <path
-                  d="M49.4,-67.7C61.4,-58.8,66.7,-39.4,69.8,-20.7C72.8,-2,73.7,16,66.7,29.7C59.7,43.4,44.8,52.9,29.3,61.7C13.8,70.5,-2.3,78.6,-19.1,77.1C-35.9,75.5,-53.3,64.2,-62.9,49.3C-72.4,34.4,-74.1,15.9,-71.9,-2.3C-69.8,-20.6,-63.8,-38.6,-51.8,-47.8C-39.8,-57,-21.9,-57.3,-3.3,-54.3C15.4,-51.4,30.8,-45.7,49.4,-67.7Z"
-                  transform="translate(100 95)"
+                  d="M156.5 1.00001C144 -0.999993 129.53 1.86636 121.5 1.50001C113.171 1.12002 100.54 11.9442 92.284 21.2214C55.7077 38.9274 18.3558 82.7367 7.13753 127.952C-6.52588 183.023 -0.862598 231.952 26.6374 276.952C53.5263 320.952 91.6374 338.163 111.637 343.952L112.479 344.196C131.993 349.846 144.497 353.466 169.637 354.452C192.12 355.334 212.5 349.5 226.5 345.5C240.5 341.5 295 325.997 295 290.5C295 264.345 235.137 257.5 221.5 243C218.943 240.281 213.5 238.5 213 235.5C204.657 225.494 203.531 218.563 201.5 208C200 204 200.5 196.5 201.5 192.5C205.5 187.5 204.5 175.75 207 172.5C212 166 228.725 148.418 227.5 122.5C226.707 105.717 233.074 92.6616 234 90.5C236.357 85 241.945 47.9774 217 26C209.048 18.994 197.367 14.3694 188.5 9C178.156 2.73591 169 3.00001 156.5 1.00001Z"
+                  fill="#00AAFF"
                 />
-              </clipPath>
+              </mask>
+
+              {/* Image Pattern for fill */}
+              <pattern
+                id="blobImagePattern"
+                patternContentUnits="objectBoundingBox"
+                width="1"
+                height="1"
+              >
+                <image
+                  id="blobImage"
+                  width="1309"
+                  height="1566"
+                  preserveAspectRatio="none"
+                  xlinkHref="/assets/img/pic.png"
+                  transform="scale(0.000904014, 0.00063857) translate(-101.4, 0)"
+                />
+              </pattern>
             </defs>
 
-            {/* Glowing blob background */}
+            {/* Blob shape with neon glow */}
             <path
-              fill="#00aaff"
-              d="M49.4,-67.7C61.4,-58.8,66.7,-39.4,69.8,-20.7C72.8,-2,73.7,16,66.7,29.7C59.7,43.4,44.8,52.9,29.3,61.7C13.8,70.5,-2.3,78.6,-19.1,77.1C-35.9,75.5,-53.3,64.2,-62.9,49.3C-72.4,34.4,-74.1,15.9,-71.9,-2.3C-69.8,-20.6,-63.8,-38.6,-51.8,-47.8C-39.8,-57,-21.9,-57.3,-3.3,-54.3C15.4,-51.4,30.8,-45.7,49.4,-67.7Z"
-              transform="translate(100 100)"
+              d="M119 42C106.5 40 112 20 104 17.5C101 12.5 90 11.5 81.5 14.5C44.9237 32.206 18.3558 82.7366 7.13754 127.952C-6.52587 183.023 -0.862583 231.952 26.6374 276.952C53.5263 320.952 91.6374 338.163 111.637 343.952L112.479 344.196C131.993 349.846 144.497 353.466 169.637 354.452C192.12 355.334 212.5 349.5 226.5 345.5C240.5 341.5 295 325.997 295 290.5C295 275.943 273.35 261.228 252.5 252C235.889 244.649 219.604 241.495 216.5 239.5C209.5 235 183.5 239 181 226C179.5 222 182 208.5 183 204.5C187 199.5 167 180.75 169.5 177.5C174.5 171 170.725 158.918 169.5 133C168.707 116.217 180.5 136 166.5 108.5C152.5 81 167.445 86.9774 142.5 65C134.548 57.994 137.867 56.3694 129 51C118.656 44.7359 131.5 44 119 42Z"
+              fill="#00AAFF"
+              filter="url(#neonGlow)"
             />
 
-            {/* Image clipped to blob */}
-            <image
-              href="/assets/img/pic.png"
-              width="200"
-              height="140"
-              x=""
-              y="40"
-              clip-path="url(#blobClip)"
-              preserveAspectRatio="xMidYMid meet"
-            />
+            {/* Image masked into blob */}
+            <g mask="url(#blobImageMask)">
+              <rect
+                x="40"
+                y="0"
+                width="255"
+                height="361"
+                fill="url(#blobImagePattern)"
+              />
+            </g>
           </svg>
         </div>
 
