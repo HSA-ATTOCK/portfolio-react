@@ -460,6 +460,7 @@
     max-width: 100%;
     height: 400px;
     order: -1;
+    display: none; /* Hide the image container */
   }
 
   .category-skills {
@@ -467,6 +468,7 @@
   }
 }
 
+/* Medium tablets and small laptops */
 @media (max-width: 768px) {
   .skills {
     padding: 8rem 5% 5rem;
@@ -481,6 +483,10 @@
     padding: 1.5rem;
   }
 
+  .skills-image {
+    height: 350px;
+  }
+
   .skills-image::before {
     width: 100%;
     height: 100%;
@@ -492,19 +498,28 @@
   }
 }
 
+/* Small tablets and large phones */
 @media (max-width: 640px) {
   .skills {
     padding: 7rem 5% 4rem;
   }
 
   .heading {
-    font-size: 3.5rem;
-    margin-bottom: 4rem;
+    font-size: 3.2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .skills-container {
+    gap: 4rem;
+  }
+
+  .skills-content {
+    gap: 2.5rem;
   }
 
   .category-skills {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 1.2rem;
   }
 
   .skill-icon-container {
@@ -514,5 +529,94 @@
 
   .skill-name {
     font-size: 0.85rem;
+  }
+}
+
+/* Medium phones */
+@media (max-width: 480px) {
+  .skills {
+    padding: 6rem 5% 3rem;
+  }
+
+  .heading {
+    font-size: 2.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .category-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .category-skills {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-item {
+    padding: 1rem 0.5rem;
+  }
+
+  .skill-icon-container {
+    width: 45px;
+    height: 45px;
+  }
+
+  .skill-icon {
+    font-size: 1.8rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 375px) {
+  .heading {
+    font-size: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .skills-content {
+    gap: 2rem;
+  }
+
+  .skill-category {
+    padding: 1.2rem;
+  }
+
+  .category-skills {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .skill-icon-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .skill-name {
+    font-size: 0.8rem;
+  }
+
+  .skills-image {
+    height: 300px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 320px) {
+  .skills {
+    padding: 5rem 5% 2rem;
+  }
+
+  .heading {
+    font-size: 2.2rem;
+  }
+
+  .category-skills {
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+  }
+
+  .skill-item {
+    padding: 0.8rem 0.3rem;
   }
 }
