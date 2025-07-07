@@ -14,6 +14,8 @@ import resumeimg from "/assets/img/work7.jpg";
 import portdesimg from "/assets/img/work8.png";
 import persoport from "/assets/img/work10.jpeg";
 import charityimg from "/assets/img/work11.png";
+import weanewimg from "/assets/img/work12.png";
+import neurapdfimg from "/assets/img/work13.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,6 +26,24 @@ const Portfolio = () => {
   );
 
   const projects = [
+    {
+      title: "Neura: PDF AI Assistant",
+      description:
+        "An AI-powered PDF assistant that answers questions from uploaded PDFs using Google Gemini.",
+      techStack: ["React", "Flask", "Gemini AI", "Hugging Face", "Vercel"],
+      previewImage: neurapdfimg,
+      githubLink: "https://github.com/HSA-ATTOCK/Neura-PDFAssistant",
+      demo: "https://neura-pdfassistant.haidersajjad.site/",
+    },
+    {
+      title: "Weather & News Dashboard",
+      description:
+        "A dynamic dashboard that shows real-time weather and top news using public APIs.",
+      techStack: ["React", "CSS3", "REST API"],
+      previewImage: weanewimg,
+      githubLink: "https://github.com/HSA-ATTOCK/weather-news-app",
+      demo: "https://hsaweathernews.vercel.app/",
+    },
     {
       title: "React Charity Website for Upwork Client",
       description: "Interactive resume builder with real-time preview.",
