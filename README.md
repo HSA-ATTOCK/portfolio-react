@@ -1,12 +1,83 @@
-# React + Vite
+# 🖼️ Personal Portfolio – React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a responsive and modern personal portfolio website built with **React**.  
+It showcases my projects, skills, and experience as an **architect & builder**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Preview
 
-## Expanding the ESLint configuration
+![Portfolio Screenshot].(preview.png) 
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+- Clean, minimalist design
+- Built with **React** and modern CSS
+- Fully responsive for desktop, tablet, and mobile
+- Smooth navigation & scroll animations
+- Sections for:
+  - About Me
+  - Projects / Work
+  - Skills & Services
+  - Contact
+
+---
+
+## ⚙️ Technologies Used
+- React
+- JavaScript (ES6+)
+- CSS / SCSS
+- HTML5
+- [React Router](https://reactrouter.com/) (if used)
+
+---
+
+## 🚀 Getting Started
+
+To run the project locally:
+
+```bash
+# Clone this repository
+git clone https://github.com/HSA-ATTOCK/portfolio-react.git
+
+# Navigate into the folder
+cd portfolio-react
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+````
+
+Then open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+---
+
+## 📦 Build for Production
+
+```bash
+npm run build
+```
+
+The optimized build will be in the `/build` folder, ready to deploy.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 🙋‍♂️ Author
+
+**HSA-Attock**
+Full-Stack Web Developer and Designer
+
+* GitHub: [HSA-ATTOCK](https://github.com/HSA-ATTOCK)
+
+---
+
+> ⭐ *If you like this project, please consider giving it a star!*
+
+```
