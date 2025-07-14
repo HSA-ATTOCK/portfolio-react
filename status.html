@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Server Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-indicator {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .status-indicator::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .endpoint-info {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #4CAF50;
+        }
+        
+        .endpoint-info code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .timestamp {
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .feature h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-indicator"></div>
+        
+        <h1>Email Server Running</h1>
+        <p class="subtitle">Portfolio Contact Form Backend</p>
+        
+        <div class="info-card">
+            <h3>🚀 Server Status</h3>
+            <p>Your email server is up and running successfully! Ready to handle contact form submissions from your portfolio.</p>
+        </div>
+        
+        <div class="endpoint-info">
+            <h3>📧 Email API Endpoint</h3>
+            <p><code>POST /api/send-email</code></p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Send contact form data to this endpoint to deliver emails to your inbox.
+            </p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h4>🔒 Secure</h4>
+                <p>Gmail SMTP with authentication</p>
+            </div>
+            <div class="feature">
+                <h4>⚡ Fast</h4>
+                <p>Express.js powered backend</p>
+            </div>
+            <div class="feature">
+                <h4>🌐 CORS Enabled</h4>
+                <p>Ready for frontend integration</p>
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            Server started at: <span id="timestamp"></span>
+        </div>
+    </div>
+    
+    <script>
+        // Display current timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Add some interactive elements
+        document.querySelector('.status-indicator').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    </script>
+</body>
+</html>
