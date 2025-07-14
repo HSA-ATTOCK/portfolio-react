@@ -16,6 +16,7 @@ import persoport from "/assets/img/work10.jpeg";
 import charityimg from "/assets/img/work11.png";
 import weanewimg from "/assets/img/work12.png";
 import neurapdfimg from "/assets/img/work13.png";
+import attendmanagimg from "/assets/img/work14.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,6 +27,21 @@ const Portfolio = () => {
   );
 
   const projects = [
+    {
+      title: "Attendance Management System",
+      description:
+        "A web-based attendance app with React, Firebase, and Node.js. IP-restricted marking, admin controls, and auto-absent on timeout.",
+      techStack: [
+        "React",
+        "Firebase",
+        "Firebase Admin SDK",
+        "Node.js",
+        "Express.js",
+      ],
+      previewImage: attendmanagimg,
+      githubLink: "https://github.com/HSA-ATTOCK/Attendance-Management-System",
+      demo: "https://attendance.haidersajjad.site/",
+    },
     {
       title: "Neura: PDF AI Assistant",
       description:
