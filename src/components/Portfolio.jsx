@@ -17,6 +17,7 @@ import charityimg from "/assets/img/work11.png";
 import weanewimg from "/assets/img/work12.png";
 import neurapdfimg from "/assets/img/work13.png";
 import attendmanagimg from "/assets/img/work14.png";
+import neurachatbotimg from "/assets/img/work15.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,6 +28,15 @@ const Portfolio = () => {
   );
 
   const projects = [
+    {
+      title: "Neura AI: Chatbot Assistant",
+      description:
+        "A full-stack AI chatbot powered by Groq's LLaMA3 model, featuring a React frontend on Vercel and a Python Flask backend on Hugging Face Spaces.",
+      techStack: ["React", "Flask", "Groq LLaMA3", "Hugging Face", "Vercel"],
+      previewImage: neurachatbotimg,
+      githubLink: "https://github.com/HSA-ATTOCK/Neura-Chatbot",
+      demo: "https://neura-chatbot.haidersajjad.site/",
+    },
     {
       title: "Attendance Management System",
       description:
