@@ -7,7 +7,7 @@ It showcases my projects, skills, and experience as an **architect & builder**.
 
 ## 📸 Preview
 
-![Portfolio Screenshot].(preview.png) 
+![Portfolio React Screenshot](preview.png) 
 
 ## ✨ Features
 - Clean, minimalist design
