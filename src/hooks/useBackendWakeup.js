@@ -5,25 +5,35 @@ const N8N_WEBHOOK_URL = "https://haider530.app.n8n.cloud/webhook/wake-backend";
 
 export const useBackendWakeup = () => {
   useEffect(() => {
-    const wakeBackend = async () => {
+    const wakeBackend = () => {
       try {
-        const response = await fetch(N8N_WEBHOOK_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            source: "portfolio-website",
-            action: "wake-backend",
-            page: window.location.pathname,
-            userAgent: navigator.userAgent,
-          }),
+        // Method 1: Image pixel trick (bypasses CORS completely)
+        const img = new Image();
+        const params = new URLSearchParams({
+          timestamp: new Date().toISOString(),
+          source: "portfolio-website",
+          action: "wake-backend",
+          page: window.location.pathname,
+          userAgent: navigator.userAgent.substring(0, 50), // Truncate to avoid URL length issues
+          t: Date.now(), // Cache buster
         });
 
-        if (response.ok) {
+        img.src = `${N8N_WEBHOOK_URL}?${params.toString()}`;
+
+        img.onload = () => {
           console.log("Backend wake-up successful");
-        }
+        };
+
+        img.onerror = () => {
+          console.log(
+            "Backend wake-up request sent (response not readable due to CORS)"
+          );
+        };
+
+        // Clean up after 5 seconds
+        setTimeout(() => {
+          img.src = "";
+        }, 5000);
       } catch (err) {
         console.log("Backend wake-up failed:", err);
       }
@@ -32,8 +42,8 @@ export const useBackendWakeup = () => {
     // Call immediately
     wakeBackend();
 
-    // Optional: Call again after 5 seconds to ensure it worked
-    const timeoutId = setTimeout(wakeBackend, 5000);
+    // Optional: Call again after 10 seconds to ensure it worked
+    const timeoutId = setTimeout(wakeBackend, 10000);
 
     return () => clearTimeout(timeoutId);
   }, []);
