@@ -14,7 +14,7 @@ function App() {
   // Backend wake-up effect
   useEffect(() => {
     const N8N_WEBHOOK_URL =
-      "https://haider530.app.n8n.cloud/webhook/wake-backend";
+      "https://haider530.app.n8n.cloud/webhook-test/wake-backend";
 
     // Function to wake backend
     const wakeBackend = () => {
