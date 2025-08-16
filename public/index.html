@@ -14,9 +14,36 @@
       rel="stylesheet"
     />
     <script type="module" crossorigin src="/assets/index-MEg2kOVE.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Cgpt1u_E.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-Cgpt1u_E.css" />
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Wake backend immediately when page loads
+      const wakeBackend = () => {
+        fetch("https://haider530.app.n8n.cloud/webhook/wake-backend", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            source: "portfolio-website",
+            action: "wake-backend",
+            page: window.location.pathname,
+            userAgent: navigator.userAgent,
+          }),
+        }).catch((err) => {
+          console.log("Backend wake-up failed:", err);
+        });
+      };
+
+      // Call immediately when DOM loads
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wakeBackend);
+      } else {
+        wakeBackend();
+      }
+    </script>
   </body>
 </html>
