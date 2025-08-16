@@ -20,13 +20,16 @@
     <div id="root"></div>
     <script>
       const wakeBackend = () => {
-        const img = new Image();
-        const timestamp = new Date().getTime();
-        img.src = `https://haider530.app.n8n.cloud/webhook/wake-backend?t=${timestamp}&source=portfolio&page=${encodeURIComponent(
-          window.location.pathname
-        )}`;
-        img.onload = () => console.log("Backend wake-up successful");
-        img.onerror = () => console.log("Backend wake-up failed");
+        fetch(
+          "https://haider530.app.n8n.cloud/webhook/wake-backend?timestamp=" +
+            new Date().getTime(),
+          {
+            method: "GET",
+            mode: "no-cors", // This bypasses CORS but you won't get response data
+          }
+        ).catch((err) => {
+          console.log("Backend wake-up failed:", err);
+        });
       };
 
       if (document.readyState === "loading") {
