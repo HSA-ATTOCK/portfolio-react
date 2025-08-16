@@ -18,25 +18,5 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      const wakeBackend = () => {
-        fetch(
-          "https://haider530.app.n8n.cloud/webhook/wake-backend?timestamp=" +
-            new Date().getTime(),
-          {
-            method: "GET",
-            mode: "no-cors", // This bypasses CORS but you won't get response data
-          }
-        ).catch((err) => {
-          console.log("Backend wake-up failed:", err);
-        });
-      };
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", wakeBackend);
-      } else {
-        wakeBackend();
-      }
-    </script>
   </body>
 </html>

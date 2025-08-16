@@ -24,4 +24,3 @@ dist-ssr
 *.sw?
 
 public/assets/img/work16.png
-src/hooks/useBackendWakeup.js
