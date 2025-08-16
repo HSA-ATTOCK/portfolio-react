@@ -19,26 +19,16 @@
   <body>
     <div id="root"></div>
     <script>
-      // Wake backend immediately when page loads
       const wakeBackend = () => {
-        fetch("https://haider530.app.n8n.cloud/webhook/wake-backend", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            source: "portfolio-website",
-            action: "wake-backend",
-            page: window.location.pathname,
-            userAgent: navigator.userAgent,
-          }),
-        }).catch((err) => {
-          console.log("Backend wake-up failed:", err);
-        });
+        const img = new Image();
+        const timestamp = new Date().getTime();
+        img.src = `https://haider530.app.n8n.cloud/webhook/wake-backend?t=${timestamp}&source=portfolio&page=${encodeURIComponent(
+          window.location.pathname
+        )}`;
+        img.onload = () => console.log("Backend wake-up successful");
+        img.onerror = () => console.log("Backend wake-up failed");
       };
 
-      // Call immediately when DOM loads
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", wakeBackend);
       } else {
