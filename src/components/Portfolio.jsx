@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/portfolio.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { AnimatedPinDemo } from "../components/3d-pin-demo";
@@ -19,10 +18,8 @@ import weanewimg from "/assets/img/work12.png";
 import neurapdfimg from "/assets/img/work13.png";
 import attendmanagimg from "/assets/img/work14.png";
 import neurachatbotimg from "/assets/img/work15.png";
-import dialerimg from "/assets/img/dialer.png";
 
 const Portfolio = () => {
-  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(3);
@@ -31,16 +28,6 @@ const Portfolio = () => {
   );
 
   const projects = [
-    {
-      title: "Professional Twilio Dialer",
-      description:
-        "Enterprise-grade call center solution with React, Node.js, MongoDB, and Twilio API integration for professional calling systems.",
-      techStack: ["React", "Node.js", "MongoDB", "Twilio API", "JWT Auth", "WebSocket"],
-      previewImage: dialerimg,
-      isDetailed: true,
-      githubLink: "#", // Placeholder since we're removing GitHub link for this project
-      demo: "https://twilio-dialer-demo.com", // You can replace with actual demo URL
-    },
     {
       title: "Neura AI: Chatbot Assistant",
       description:
@@ -275,27 +262,14 @@ const Portfolio = () => {
         >
           {visibleProjects.map((project) => (
             <div className="portfolio-pin-box" key={project.title}>
-              {project.isDetailed ? (
-                <div onClick={() => navigate('/project/twilio-dialer')} style={{ cursor: 'pointer' }}>
-                  <AnimatedPinDemo
-                    title={project.title}
-                    description={project.description}
-                    image={project.previewImage}
-                    githubLink={project.githubLink}
-                    demo={project.demo}
-                    techStack={project.techStack}
-                  />
-                </div>
-              ) : (
-                <AnimatedPinDemo
-                  title={project.title}
-                  description={project.description}
-                  image={project.previewImage}
-                  githubLink={project.githubLink}
-                  demo={project.demo}
-                  techStack={project.techStack}
-                />
-              )}
+              <AnimatedPinDemo
+                title={project.title}
+                description={project.description}
+                image={project.previewImage}
+                githubLink={project.githubLink}
+                demo={project.demo}
+                techStack={project.techStack}
+              />
             </div>
           ))}
         </div>
