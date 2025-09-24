@@ -58,8 +58,8 @@ const Portfolio = () => {
         "An AI-powered PDF assistant that answers questions from uploaded PDFs using Google Gemini.",
       techStack: ["React", "Flask", "Gemini AI", "Hugging Face", "Vercel"],
       previewImage: neurapdfimg,
-      githubLink: "https://github.com/HSA-ATTOCK/Neura-PDFAssistant",
-      demo: "https://neura-pdfassistant.haidersajjad.site/",
+      githubLink: "#",
+      demo: "#",
     },
     {
       title: "Weather & News Dashboard",
