@@ -18,6 +18,9 @@ import weanewimg from "/assets/img/work12.png";
 import neurapdfimg from "/assets/img/work13.png";
 import attendmanagimg from "/assets/img/work14.png";
 import neurachatbotimg from "/assets/img/work15.png";
+import jknetworksimg from "/assets/img/jknetworks.png";
+import dialerimg from "/assets/img/dialer.png";
+import webautoimg from "/assets/img/webauto.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,9 +32,57 @@ const Portfolio = () => {
 
   const projects = [
     {
+      title: "Web Automation Site",
+      description:
+        "Platform providing web automation, custom site development, and productivity tools with React and Node.js.",
+      techStack: [
+        "React.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Node.js",
+        "Express",
+        "Vercel",
+      ],
+      previewImage: webautoimg,
+      githubLink: null,
+      demo: "https://web.haidersajjad.site/",
+    },
+    {
+      title: "Neura Dialer: International Calling Platform",
+      description:
+        "International calling app with React frontend, Node/Express backend, and Twilio integration.",
+      techStack: [
+        "React",
+        "Node.js",
+        "Express",
+        "Twilio API",
+        "MongoDB",
+        "Vercel",
+      ],
+      previewImage: dialerimg,
+      githubLink: null,
+      demo: "https://dialer.haidersajjad.site",
+    },
+    {
+      title: "JK Networks: ISP Website",
+      description:
+        "Next.js ISP site with TypeScript, Tailwind CSS, and server-side email handling.",
+      techStack: [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Node.js",
+        "Nodemailer",
+        "Vercel",
+      ],
+      previewImage: jknetworksimg,
+      githubLink: null,
+      demo: "https://jknetworks.haidersajjad.site/",
+    },
+    {
       title: "Neura AI: Chatbot Assistant",
       description:
-        "A full-stack AI chatbot powered by Groq's LLaMA3 model, featuring a React frontend on Vercel and a Python Flask backend on Hugging Face Spaces.",
+        "AI chatbot using Groq LLaMA3 with React frontend and Flask backend.",
       techStack: ["React", "Flask", "Groq LLaMA3", "Hugging Face", "Vercel"],
       previewImage: neurachatbotimg,
       githubLink: "https://github.com/HSA-ATTOCK/Neura-Chatbot",
@@ -40,7 +91,7 @@ const Portfolio = () => {
     {
       title: "Attendance Management System",
       description:
-        "A web-based attendance app with React, Firebase, and Node.js. IP-restricted marking, admin controls, and auto-absent on timeout.",
+        "React and Firebase attendance app with IP-based marking and admin controls.",
       techStack: [
         "React",
         "Firebase",
