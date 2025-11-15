@@ -1,7 +1,7 @@
 // src/hooks/useBackendWakeup.js
 import { useEffect } from "react";
 
-const N8N_WEBHOOK_URL = "https://webauto1.app.n8n.cloud/webhook/wake-backend";
+const N8N_WEBHOOK_URL = "https://webauto0.app.n8n.cloud/webhook/wake-backend";
 
 export const useBackendWakeup = () => {
   useEffect(() => {
