@@ -19,7 +19,7 @@ const Hero = () => {
       setText(
         isDeleting
           ? fullText.substring(0, text.length - 1)
-          : fullText.substring(0, text.length + 1)
+          : fullText.substring(0, text.length + 1),
       );
 
       setDelta(isDeleting ? 50 : 100);
@@ -174,7 +174,7 @@ const Hero = () => {
           <i className="bx bxl-github"></i>
         </a>
         <a
-          href="https://drive.google.com/file/d/1di9rasT37Ppg5Hm6mVdVHXpY2p_bbAAC/view?usp=sharing"
+          href="https://drive.google.com/file/d/1b8TqTcwSnbTcVcfCtfCKzfjAfYD_iskX/view?usp=drivesdk"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="CV"
