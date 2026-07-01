@@ -20,7 +20,7 @@
   color: var(--main-color);
 }
 
-.contact h2::after {
+/* .contact h2::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -31,7 +31,7 @@
   background: var(--main-color);
   border-radius: 2px;
   transition: all 0.3s ease;
-}
+} */
 
 .contact form {
   max-width: 70rem;
@@ -91,9 +91,13 @@
   color: var(--text-color);
   background: var(--bg-color);
   border-radius: 1rem;
-  margin: 0.7rem 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Give the textarea its own top margin */
+.contact form textarea {
+  margin-top: 0.7rem;
 }
 
 .contact form .input-box input::placeholder,
@@ -231,8 +235,9 @@
     height: 5px;
   }
 
-  .contact form .input-box input {
-    width: 48%;
+  .contact form .input-box .input-field-wrapper {
+    width: calc(50% - 1rem);
+    flex: 0 0 calc(50% - 1rem);
   }
 
   .contact form {
@@ -251,12 +256,54 @@
   }
 }
 
-/* Tablet styles */
+/* Mobile styles */
 @media (max-width: 767px) {
   .contact form .input-box {
     flex-direction: column;
     gap: 1rem;
   }
+
+  .contact form .input-box .input-field-wrapper {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+}
+
+/* Field wrapper — stacks input + error message vertically */
+.input-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+/* Inputs and textarea inside wrappers are always full width of their wrapper */
+.input-field-wrapper input,
+.input-field-wrapper textarea {
+  width: 100% !important;
+  margin: 0;
+}
+
+/* Textarea wrapper is always full width */
+.contact form > .input-field-wrapper {
+  width: 100%;
+}
+
+/* Error state for inputs */
+.contact form input.input-error,
+.contact form textarea.input-error {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 1rem rgba(220, 53, 69, 0.3) !important;
+}
+
+/* Field-level error message */
+.field-error {
+  display: block;
+  color: #ff6b6b;
+  font-size: 1.2rem;
+  margin-top: 0.4rem;
+  text-align: left;
+  padding-left: 0.5rem;
 }
 
 /* Background decoration elements */

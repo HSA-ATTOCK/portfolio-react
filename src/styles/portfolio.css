@@ -26,7 +26,7 @@
   position: relative;
 }
 
-.portfolio h2::after {
+/* .portfolio h2::after {
   content: "";
   position: absolute;
   bottom: -1.5rem;
@@ -37,7 +37,7 @@
   background: var(--main-color);
   border-radius: 3px;
   box-shadow: 0 0 15px var(--main-color);
-}
+} */
 
 /* Slider Container */
 .portfolio-slider {
@@ -380,6 +380,10 @@
     margin-bottom: 4rem;
   }
 
+  .portfolio h2::after {
+    display: none;
+  }
+
   .portfolio-slider {
     padding: 0 3rem;
   }
@@ -525,7 +529,9 @@
     rgba(var(--main-color-rgb), 0.5),
     transparent
   );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;

@@ -3,31 +3,31 @@ import React, { useState, useEffect, useCallback } from "react";
 import "../styles/portfolio.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { AnimatedPinDemo } from "../components/3d-pin-demo";
-import loginimg from "/assets/img/work5.jpg";
-import paraimg from "/assets/img/work4.png";
-import chatimg from "/assets/img/work3.png";
-import privchat from "/assets/img/work9.png";
-import vidchatimg from "/assets/img/work2.jpg";
-import emaildesimg from "/assets/img/work1.jpeg";
-import taskimg from "/assets/img/work6.png";
-import resumeimg from "/assets/img/work7.jpg";
-import portdesimg from "/assets/img/work8.png";
-import persoport from "/assets/img/work10.jpeg";
-import charityimg from "/assets/img/work11.png";
-import weanewimg from "/assets/img/work12.png";
-import neurapdfimg from "/assets/img/work13.png";
-import attendmanagimg from "/assets/img/work14.png";
-import neurachatbotimg from "/assets/img/work15.png";
-import jknetworksimg from "/assets/img/jknetworks.png";
-import dialerimg from "/assets/img/dialer.png";
-import webautoimg from "/assets/img/webauto.png";
+const loginimg = "/assets/img/work5.jpg";
+const paraimg = "/assets/img/work4.png";
+const chatimg = "/assets/img/work3.png";
+const privchat = "/assets/img/work9.png";
+const vidchatimg = "/assets/img/work2.jpg";
+const emaildesimg = "/assets/img/work1.jpeg";
+const taskimg = "/assets/img/work6.png";
+const resumeimg = "/assets/img/work7.jpg";
+const portdesimg = "/assets/img/work8.png";
+const persoport = "/assets/img/work10.jpeg";
+const charityimg = "/assets/img/work11.png";
+const weanewimg = "/assets/img/work12.png";
+const neurapdfimg = "/assets/img/work13.png";
+const attendmanagimg = "/assets/img/work14.png";
+const neurachatbotimg = "/assets/img/work15.png";
+const jknetworksimg = "/assets/img/jknetworks.png";
+const dialerimg = "/assets/img/dialer.png";
+const webautoimg = "/assets/img/webauto.png";
 
 const Portfolio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
+    typeof window !== "undefined" ? window.innerWidth : 1200,
   );
 
   const projects = [
@@ -45,7 +45,7 @@ const Portfolio = () => {
       ],
       previewImage: webautoimg,
       githubLink: null,
-      demo: "https://web.haidersajjad.site/",
+      demo: "https://web.haidersajjad.com/",
     },
     {
       title: "Neura Dialer: International Calling Platform",
@@ -61,7 +61,7 @@ const Portfolio = () => {
       ],
       previewImage: dialerimg,
       githubLink: null,
-      demo: "https://dialer.haidersajjad.site",
+      demo: "https://dialer.haidersajjad.com",
     },
     {
       title: "JK Networks: ISP Website",
@@ -77,7 +77,7 @@ const Portfolio = () => {
       ],
       previewImage: jknetworksimg,
       githubLink: null,
-      demo: "https://jknetworks.haidersajjad.site/",
+      demo: "https://jknetworks.haidersajjad.com/",
     },
     {
       title: "Neura AI: Chatbot Assistant",
@@ -86,7 +86,7 @@ const Portfolio = () => {
       techStack: ["React", "Flask", "Groq LLaMA3", "Hugging Face", "Vercel"],
       previewImage: neurachatbotimg,
       githubLink: "https://github.com/HSA-ATTOCK/Neura-Chatbot",
-      demo: "https://neura-chatbot.haidersajjad.site/",
+      demo: "https://neura-chatbot.haidersajjad.com/",
     },
     {
       title: "Attendance Management System",
@@ -101,7 +101,7 @@ const Portfolio = () => {
       ],
       previewImage: attendmanagimg,
       githubLink: "https://github.com/HSA-ATTOCK/Attendance-Management-System",
-      demo: "https://attendance.haidersajjad.site/",
+      demo: "https://attendance.haidersajjad.com/",
     },
     {
       title: "Neura: PDF AI Assistant",
@@ -249,7 +249,8 @@ const Portfolio = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % Math.ceil(projects.length / itemsPerPage)
+      (prevIndex) =>
+        (prevIndex + 1) % Math.ceil(projects.length / itemsPerPage),
     );
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, itemsPerPage, projects.length]);
@@ -260,7 +261,7 @@ const Portfolio = () => {
     setCurrentIndex(
       (prevIndex) =>
         (prevIndex - 1 + Math.ceil(projects.length / itemsPerPage)) %
-        Math.ceil(projects.length / itemsPerPage)
+        Math.ceil(projects.length / itemsPerPage),
     );
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, itemsPerPage, projects.length]);
@@ -272,12 +273,12 @@ const Portfolio = () => {
       setCurrentIndex(index);
       setTimeout(() => setIsTransitioning(false), 500);
     },
-    [isTransitioning, currentIndex]
+    [isTransitioning, currentIndex],
   );
 
   const visibleProjects = projects.slice(
     currentIndex * itemsPerPage,
-    currentIndex * itemsPerPage + itemsPerPage
+    currentIndex * itemsPerPage + itemsPerPage,
   );
 
   // Auto-rotate slides
@@ -336,8 +337,17 @@ const Portfolio = () => {
       </div>
 
       <div className="slider-dots">
-        {Array.from({ length: Math.ceil(projects.length / itemsPerPage) }).map(
-          (_, index) => (
+        {(() => {
+          const totalPages = Math.ceil(projects.length / itemsPerPage);
+          const MAX_DOTS = 5;
+
+          let start = currentIndex - Math.floor(MAX_DOTS / 2);
+          let end = start + MAX_DOTS - 1;
+
+          if (start < 0) { start = 0; end = Math.min(MAX_DOTS - 1, totalPages - 1); }
+          if (end >= totalPages) { end = totalPages - 1; start = Math.max(0, end - MAX_DOTS + 1); }
+
+          return Array.from({ length: end - start + 1 }, (_, i) => start + i).map((index) => (
             <button
               key={index}
               className={`dot ${index === currentIndex ? "active" : ""}`}
@@ -345,8 +355,8 @@ const Portfolio = () => {
               aria-label={`Go to slide ${index + 1}`}
               disabled={isTransitioning}
             />
-          )
-        )}
+          ));
+        })()}
       </div>
     </section>
   );

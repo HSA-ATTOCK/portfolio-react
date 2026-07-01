@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import "../styles/about.css";
 // import aboutImage from "../assets/img/work.jpg"; // Import your image properly
@@ -22,25 +23,25 @@ const About = () => {
         </div>
 
         <div className="about-text">
-          <h3 className="about-subtitle">Full-Stack Developer & Designer</h3>
+          <h3 className="about-subtitle">AI Automation Engineer & Full-Stack Developer</h3>
           <div className="about-description">
             <p>
-              I'm Haider Sajjad Azmat, a passionate Full-Stack Web Developer and
-              Designer dedicated to crafting clean, responsive, and visually
-              engaging web applications. With expertise in both front-end and
-              back-end development, I work with technologies like HTML, CSS,
-              JavaScript, React, Node.js, and Express.
+              I'm Haider Sajjad, an AI Automation Engineer and Full-Stack Web
+              Developer dedicated to building intelligent systems and clean,
+              responsive web applications. I specialize in workflow automation,
+              AI integrations, and end-to-end web development using technologies
+              like React, Next.js, Node.js, and Express.
             </p>
             <p>
-              My approach combines technical skills with thoughtful UI/UX design
-              principles to create impactful digital experiences. On GitHub, I
-              actively share my projects and learning journey as I continue to
-              explore emerging technologies and development practices.
+              I design and deploy automated pipelines using tools like n8n,
+              connecting AI models, APIs, and business workflows to save time
+              and scale operations. My work spans from building custom AI
+              chatbots and automation platforms to full production web apps.
             </p>
             <p>
-              Whether building functional systems or designing intuitive
-              interfaces, I'm committed to delivering solutions that are both
-              technically sound and aesthetically pleasing.
+              Whether automating complex processes or crafting intuitive
+              interfaces, I'm committed to delivering solutions that are
+              technically sound, efficient, and built to last.
             </p>
           </div>
         </div>

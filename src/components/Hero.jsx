@@ -1,13 +1,15 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import "../styles/hero.css";
+
+const toRotate = ["AI Automation Engineer", "Full-Stack Web Developer"];
+const articles = ["an", "a"];
 
 const Hero = () => {
   const [text, setText] = useState("");
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [delta, setDelta] = useState(100);
-
-  const toRotate = ["Full-Stack Web Developer", "UI/UX Designer"];
 
   useEffect(() => {
     const tick = () => {
@@ -33,7 +35,7 @@ const Hero = () => {
 
     const ticker = setTimeout(tick, delta);
     return () => clearTimeout(ticker);
-  }, [text, isDeleting, loopNum, delta, toRotate]);
+  }, [text, isDeleting, loopNum, delta]);
 
   return (
     <section className="hero" id="home">
@@ -44,12 +46,13 @@ const Hero = () => {
           </h1>
 
           <h2 className="typewriter">
-            a <span className="wrap">{text}</span>
+            {articles[loopNum % toRotate.length]}{" "}
+            <span className="wrap">{text}</span>
           </h2>
 
           <p>
-            I build modern, responsive websites and web applications with
-            cutting-edge technologies.
+            I build intelligent automation systems and modern, responsive web
+            applications with cutting-edge technologies.
           </p>
 
           <div className="hero-buttons">

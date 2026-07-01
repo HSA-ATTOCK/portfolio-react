@@ -1,7 +1,8 @@
+"use client";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 export const Vortex = (props) => {
   const {
@@ -152,7 +153,7 @@ export const Vortex = (props) => {
     return x > canvas.width || x < 0 || y > canvas.height || y < 0;
   };
 
-  const resize = (canvas, ctx) => {
+  const resize = (canvas) => {
     const { innerWidth, innerHeight } = window;
     canvas.width = innerWidth;
     canvas.height = innerHeight;
@@ -194,7 +195,7 @@ export const Vortex = (props) => {
       if (animationFrameId.current)
         cancelAnimationFrame(animationFrameId.current);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={cn("relative h-full w-full", containerClassName)}>

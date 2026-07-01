@@ -1,19 +1,20 @@
+"use client";
 import React from "react";
 import "../styles/services.css";
 
 const Services = () => {
   const services = [
     {
+      title: "AI Automation",
+      icon: "bx bx-bot",
+      description:
+        "Building intelligent automation pipelines using n8n, AI models, and APIs to streamline workflows, save time, and scale business operations efficiently.",
+    },
+    {
       title: "Web Development",
       icon: "bx bx-code-alt",
       description:
-        "Custom website development using modern technologies like React, Node.js, and MongoDB to create fast, secure, and scalable web applications.",
-    },
-    {
-      title: "UI/UX Design",
-      icon: "bx bx-paint",
-      description:
-        "User-centered design approach creating intuitive interfaces with thoughtful information architecture and engaging visual design.",
+        "Custom website development using modern technologies like React, Next.js, Node.js, and MongoDB to create fast, secure, and scalable web applications.",
     },
     {
       title: "Responsive Design",
