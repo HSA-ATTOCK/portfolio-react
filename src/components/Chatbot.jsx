@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/chatbot.css";
 
-const WEBHOOK_URL = "https://n8n-l4ozl-u62065.vm.elestio.app/webhook/chat";
+const WEBHOOK_URL = process.env.NEXT_PUBLIC_CHAT_WEBHOOK_URL;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
