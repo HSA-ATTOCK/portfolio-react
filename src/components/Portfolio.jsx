@@ -45,7 +45,7 @@ const Portfolio = () => {
       ],
       previewImage: webautoimg,
       githubLink: null,
-      demo: "https://web.haidersajjad.com/",
+      demo: "https://webautosolutions.co.uk/",
     },
     {
       title: "Neura Dialer: International Calling Platform",
@@ -344,10 +344,19 @@ const Portfolio = () => {
           let start = currentIndex - Math.floor(MAX_DOTS / 2);
           let end = start + MAX_DOTS - 1;
 
-          if (start < 0) { start = 0; end = Math.min(MAX_DOTS - 1, totalPages - 1); }
-          if (end >= totalPages) { end = totalPages - 1; start = Math.max(0, end - MAX_DOTS + 1); }
+          if (start < 0) {
+            start = 0;
+            end = Math.min(MAX_DOTS - 1, totalPages - 1);
+          }
+          if (end >= totalPages) {
+            end = totalPages - 1;
+            start = Math.max(0, end - MAX_DOTS + 1);
+          }
 
-          return Array.from({ length: end - start + 1 }, (_, i) => start + i).map((index) => (
+          return Array.from(
+            { length: end - start + 1 },
+            (_, i) => start + i,
+          ).map((index) => (
             <button
               key={index}
               className={`dot ${index === currentIndex ? "active" : ""}`}
