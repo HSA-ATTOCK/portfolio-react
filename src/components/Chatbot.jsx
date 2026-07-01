@@ -67,6 +67,8 @@ export default function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const userMessageCount = useRef(0);
+  const transcriptSent   = useRef(false);
+  const transcriptTimer  = useRef(null);
 
   const messagesEndRef = useRef(null);
   const chatInputRef = useRef(null);
@@ -112,6 +114,63 @@ export default function Chatbot() {
       setHasUnread(false);
     }
   }, [isOpen, step]);
+
+  // ---------- Transcript sending ----------
+  const sendTranscript = (msgs, name, email) => {
+    if (transcriptSent.current) return;
+    const hasUserMsg = msgs.some((m) => m.type === "user");
+    if (!hasUserMsg || !email) return;
+    transcriptSent.current = true;
+
+    fetch("/api/send-chat-transcript", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: msgs, userName: name, userEmail: email }),
+    }).catch(() => {});
+  };
+
+  // Schedule transcript after 1 minute of inactivity (chat closed)
+  const scheduleTranscript = (msgs, name, email) => {
+    // Cancel any existing timer first
+    if (transcriptTimer.current) clearTimeout(transcriptTimer.current);
+
+    transcriptTimer.current = setTimeout(() => {
+      sendTranscript(msgs, name, email);
+      transcriptTimer.current = null;
+    }, 60000); // 1 minute
+  };
+
+  // Cancel the scheduled transcript (user reopened chat)
+  const cancelTranscriptTimer = () => {
+    if (transcriptTimer.current) {
+      clearTimeout(transcriptTimer.current);
+      transcriptTimer.current = null;
+    }
+  };
+
+  // On page/tab close — send immediately via sendBeacon (no delay possible)
+  useEffect(() => {
+    const handleUnload = () => {
+      // Cancel the 1-min timer since we're sending now
+      if (transcriptTimer.current) clearTimeout(transcriptTimer.current);
+
+      if (transcriptSent.current) return;
+      const hasUserMsg = messages.some((m) => m.type === "user");
+      if (!hasUserMsg || !userEmail) return;
+      transcriptSent.current = true;
+
+      navigator.sendBeacon(
+        "/api/send-chat-transcript",
+        new Blob(
+          [JSON.stringify({ messages, userName, userEmail })],
+          { type: "application/json" }
+        )
+      );
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, [messages, userName, userEmail]);
 
   // ---------- Intro form ----------
   const validateIntro = () => {
@@ -215,6 +274,13 @@ export default function Chatbot() {
   };
 
   const toggleChat = () => {
+    if (isOpen) {
+      // Closing — start 1-minute countdown
+      scheduleTranscript(messages, userName, userEmail);
+    } else {
+      // Opening — cancel any pending transcript timer (user is back)
+      cancelTranscriptTimer();
+    }
     setIsOpen((prev) => !prev);
     if (!isOpen) setHasUnread(false);
   };
