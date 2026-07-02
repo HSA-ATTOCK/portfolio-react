@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "../styles/chatbot.css";
 
 const WEBHOOK_URL = process.env.NEXT_PUBLIC_CHAT_WEBHOOK_URL;
@@ -39,7 +39,7 @@ function renderMarkdown(text) {
     } else {
       flushList(i);
       if (line === "") {
-        // skip consecutive blanks that were already flushed
+        // skip consecutive blanks
       } else {
         output.push(
           <p key={`p${i}`} className="cb-md-p">
@@ -66,21 +66,38 @@ export default function Chatbot() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+
   const userMessageCount = useRef(0);
-  const transcriptSent   = useRef(false);
-  const transcriptTimer  = useRef(null);
+
+  // FIX Bug 1: tracks user-message count at time of last send (-1 = never sent).
+  // Allows re-sending when new messages arrive after a previous transcript was sent.
+  const lastSentCount   = useRef(-1);
+
+  const transcriptTimer = useRef(null); // 1-min close timer
+  const visibilityTimer = useRef(null); // 30-s page-hidden timer
+
+  // Mirror state in refs so timer/event callbacks always read fresh data
+  // without needing to re-register event listeners on every state change.
+  const messagesRef  = useRef([]);
+  const userNameRef  = useRef("");
+  const userEmailRef = useRef("");
 
   const messagesEndRef = useRef(null);
-  const chatInputRef = useRef(null);
-  const sessionId = useRef(
+  const chatInputRef   = useRef(null);
+  const sessionId      = useRef(
     typeof crypto !== "undefined"
       ? crypto.randomUUID()
       : Math.random().toString(36).slice(2),
   );
 
+  // Keep refs in sync with state
+  useEffect(() => { messagesRef.current  = messages;  }, [messages]);
+  useEffect(() => { userNameRef.current  = userName;  }, [userName]);
+  useEffect(() => { userEmailRef.current = userEmail; }, [userEmail]);
+
   // Load stored user on mount
   useEffect(() => {
-    const storedName = localStorage.getItem("cb_name");
+    const storedName  = localStorage.getItem("cb_name");
     const storedEmail = localStorage.getItem("cb_email");
     if (storedName && storedEmail) {
       setUserName(storedName);
@@ -116,61 +133,105 @@ export default function Chatbot() {
   }, [isOpen, step]);
 
   // ---------- Transcript sending ----------
-  const sendTranscript = (msgs, name, email) => {
-    if (transcriptSent.current) return;
-    const hasUserMsg = msgs.some((m) => m.type === "user");
-    if (!hasUserMsg || !email) return;
-    transcriptSent.current = true;
+
+  // Stable send function — reads explicit args + lastSentCount ref for dedup.
+  // Safe to call from any timer or event handler without stale-closure issues.
+  const sendTranscript = useCallback((msgs, name, email) => {
+    const userMsgCount = msgs.filter((m) => m.type === "user").length;
+    if (userMsgCount === 0 || !email) return;
+    if (userMsgCount <= lastSentCount.current) return; // no new messages since last send
+
+    lastSentCount.current = userMsgCount; // mark this count as sent
 
     fetch("/api/send-chat-transcript", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: msgs, userName: name, userEmail: email }),
+      method:    "POST",
+      headers:   { "Content-Type": "application/json" },
+      body:      JSON.stringify({ messages: msgs, userName: name, userEmail: email }),
+      keepalive: true, // keeps request alive through page unload in supporting browsers
     }).catch(() => {});
-  };
+  }, []); // stable — only touches refs
 
-  // Schedule transcript after 1 minute of inactivity (chat closed)
-  const scheduleTranscript = (msgs, name, email) => {
-    // Cancel any existing timer first
+  // Schedule transcript 1 min after chat close
+  const scheduleTranscript = useCallback(() => {
     if (transcriptTimer.current) clearTimeout(transcriptTimer.current);
-
     transcriptTimer.current = setTimeout(() => {
-      sendTranscript(msgs, name, email);
+      sendTranscript(messagesRef.current, userNameRef.current, userEmailRef.current);
       transcriptTimer.current = null;
-    }, 60000); // 1 minute
-  };
+    }, 60000);
+  }, [sendTranscript]);
 
-  // Cancel the scheduled transcript (user reopened chat)
-  const cancelTranscriptTimer = () => {
+  // Cancel ALL pending timers when user becomes active again
+  const cancelTranscriptTimer = useCallback(() => {
     if (transcriptTimer.current) {
       clearTimeout(transcriptTimer.current);
       transcriptTimer.current = null;
     }
-  };
+    if (visibilityTimer.current) {
+      clearTimeout(visibilityTimer.current);
+      visibilityTimer.current = null;
+    }
+  }, []);
 
-  // On page/tab close — send immediately via sendBeacon (no delay possible)
+  // ---------- Page-unload / visibility events ----------
+  // Registered ONCE on mount. All handlers read from refs, so they always
+  // have the latest messages/name/email without needing to re-register.
   useEffect(() => {
-    const handleUnload = () => {
-      // Cancel the 1-min timer since we're sending now
+    // Shared sendBeacon for hard page-close events (desktop + mobile)
+    const sendBeaconNow = () => {
       if (transcriptTimer.current) clearTimeout(transcriptTimer.current);
+      if (visibilityTimer.current) clearTimeout(visibilityTimer.current);
 
-      if (transcriptSent.current) return;
-      const hasUserMsg = messages.some((m) => m.type === "user");
-      if (!hasUserMsg || !userEmail) return;
-      transcriptSent.current = true;
+      const msgs  = messagesRef.current;
+      const name  = userNameRef.current;
+      const email = userEmailRef.current;
+      const count = msgs.filter((m) => m.type === "user").length;
+
+      if (count === 0 || !email || count <= lastSentCount.current) return;
+      lastSentCount.current = count;
 
       navigator.sendBeacon(
         "/api/send-chat-transcript",
         new Blob(
-          [JSON.stringify({ messages, userName, userEmail })],
+          [JSON.stringify({ messages: msgs, userName: name, userEmail: email })],
           { type: "application/json" }
         )
       );
     };
 
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
-  }, [messages, userName, userEmail]);
+    // beforeunload — desktop browsers, some Android Chrome
+    const handleBeforeUnload = () => sendBeaconNow();
+
+    // pagehide — more reliable than beforeunload on iOS Safari + modern mobile
+    const handlePageHide = () => sendBeaconNow();
+
+    // visibilitychange — catches app-switch, screen lock, tab switch on mobile.
+    // Wait 30s before sending: if user comes back within 30s, cancel.
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (visibilityTimer.current) clearTimeout(visibilityTimer.current);
+        visibilityTimer.current = setTimeout(() => {
+          sendTranscript(messagesRef.current, userNameRef.current, userEmailRef.current);
+          visibilityTimer.current = null;
+        }, 30000);
+      } else {
+        // User came back — cancel the pending visibility timer
+        if (visibilityTimer.current) {
+          clearTimeout(visibilityTimer.current);
+          visibilityTimer.current = null;
+        }
+      }
+    };
+
+    window.addEventListener("beforeunload",       handleBeforeUnload);
+    window.addEventListener("pagehide",           handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("beforeunload",       handleBeforeUnload);
+      window.removeEventListener("pagehide",           handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [sendTranscript]); // sendTranscript is stable (useCallback with [])
 
   // ---------- Intro form ----------
   const validateIntro = () => {
@@ -188,9 +249,9 @@ export default function Chatbot() {
       setIntroErrors(errs);
       return;
     }
-    const name = nameInput.trim();
+    const name  = nameInput.trim();
     const email = emailInput.trim();
-    localStorage.setItem("cb_name", name);
+    localStorage.setItem("cb_name",  name);
     localStorage.setItem("cb_email", email);
     setUserName(name);
     setUserEmail(email);
@@ -212,13 +273,13 @@ export default function Chatbot() {
 
     try {
       const res = await fetch(WEBHOOK_URL, {
-        method: "POST",
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          name: userName,
-          email: userEmail,
-          sessionId: sessionId.current,
+        body:    JSON.stringify({
+          message:      text,
+          name:         userName,
+          email:        userEmail,
+          sessionId:    sessionId.current,
           messageIndex: currentIndex, // 0 = first message, 1+ = subsequent
         }),
       });
@@ -236,7 +297,7 @@ export default function Chatbot() {
             data.text ??
             data.reply ??
             data.response ??
-            // Array wrapping (n8n sometimes wraps in array)
+            // Array-wrapped
             (Array.isArray(data) && data[0]?.output) ??
             (Array.isArray(data) && data[0]?.message) ??
             (Array.isArray(data) && data[0]?.text) ??
@@ -244,7 +305,6 @@ export default function Chatbot() {
             (Array.isArray(data) && data[0]?.content?.parts?.[0]?.text) ??
             botText;
         } catch {
-          // n8n returned plain text
           if (raw.trim()) botText = raw.trim();
         }
       }
@@ -256,7 +316,7 @@ export default function Chatbot() {
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id:   Date.now() + 1,
           type: "bot",
           text: "Connection error. Please check your network and try again.",
         },
@@ -276,9 +336,9 @@ export default function Chatbot() {
   const toggleChat = () => {
     if (isOpen) {
       // Closing — start 1-minute countdown
-      scheduleTranscript(messages, userName, userEmail);
+      scheduleTranscript();
     } else {
-      // Opening — cancel any pending transcript timer (user is back)
+      // Opening — cancel any pending timers (user is back)
       cancelTranscriptTimer();
     }
     setIsOpen((prev) => !prev);
