@@ -60,34 +60,28 @@ function mdToHtml(text) {
 }
 
 // Build the transcript HTML rows
+// Class names are added so the <style> block's u+#body (Gmail) and
+// @media (prefers-color-scheme: dark) rules can override Gmail's auto-inversion.
 function buildTranscriptRows(messages, userName) {
   return messages
     .map((msg) => {
-      const isUser = msg.type === "user";
+      const isUser     = msg.type === "user";
       const bgColor    = isUser ? "#00abf0" : "#112240";
+      const textColor  = "#ffffff";
       const labelColor = isUser ? "#cce8ff" : "#00abf0";
       const label      = isUser ? (userName || "Visitor") : "Haider's Assistant";
       const align      = isUser ? "right" : "left";
+      const bubbleCls  = isUser ? "bubble-user" : "bubble-bot";
+      const labelCls   = isUser ? "label-user"  : "label-bot";
 
       return `
         <tr>
           <td style="padding: 8px 0;">
             <div style="text-align: ${align};">
-              <span style="font-size: 11px; color: ${labelColor} !important; font-weight: bold; display: block; margin-bottom: 4px;">
+              <span class="${labelCls}" style="font-size: 11px; color: ${labelColor}; font-weight: bold; display: block; margin-bottom: 4px;">
                 ${label}
               </span>
-              <div style="
-                display: inline-block;
-                max-width: 80%;
-                background-color: ${bgColor} !important;
-                color: #ffffff !important;
-                padding: 10px 15px;
-                border-radius: ${isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px"};
-                font-size: 14px;
-                line-height: 1.6;
-                text-align: left;
-                -webkit-text-fill-color: #ffffff;
-              ">
+              <div class="${bubbleCls}" style="display: inline-block; max-width: 80%; background-color: ${bgColor}; color: ${textColor}; -webkit-text-fill-color: ${textColor}; padding: 10px 15px; border-radius: ${isUser ? "16px 16px 4px 16px" : "16px 16px 16px 4px"}; font-size: 14px; line-height: 1.6; text-align: left;">
                 ${mdToHtml(msg.text)}
               </div>
             </div>
@@ -98,57 +92,95 @@ function buildTranscriptRows(messages, userName) {
     .join("");
 }
 
+// Shared CSS injected into every email <head>.
+// Three layers of dark-mode protection:
+//   1. color-scheme: light  →  Apple Mail, Outlook, Samsung Mail
+//   2. u + #body selectors  →  Gmail (Gmail wraps content creating a sibling <u>)
+//   3. @media prefers-color-scheme: dark  →  Any client that applies its own dark rules
+const EMAIL_STYLES = `
+  :root { color-scheme: light; }
+  body  { background-color: #081b29 !important; color: #ededed !important; }
+
+  /* ── Gmail dark-mode override (u + #body trick) ── */
+  u + #body .em-wrap   { background-color: #081b29 !important; color: #ededed !important; }
+  u + #body .em-card   { background-color: #112240 !important; }
+  u + #body .em-label  { color: #00abf0 !important; }
+  u + #body .em-value  { color: #ededed !important; }
+  u + #body .em-h2     { color: #00abf0 !important; }
+  u + #body .em-h3     { color: #00abf0 !important; }
+  u + #body .bubble-user { background-color: #00abf0 !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+  u + #body .bubble-bot  { background-color: #112240 !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+  u + #body .label-user  { color: #cce8ff !important; }
+  u + #body .label-bot   { color: #00abf0 !important; }
+  u + #body .em-footer   { color: rgba(255,255,255,0.35) !important; }
+  u + #body .em-followup { background-color: #112240 !important; }
+  u + #body .em-followup p { color: #ededed !important; }
+  u + #body .em-followup a { color: #00abf0 !important; }
+
+  /* ── @media dark override for other clients ── */
+  @media (prefers-color-scheme: dark) {
+    .em-wrap   { background-color: #081b29 !important; color: #ededed !important; }
+    .em-card   { background-color: #112240 !important; }
+    .em-label  { color: #00abf0 !important; }
+    .em-value  { color: #ededed !important; }
+    .em-h2     { color: #00abf0 !important; }
+    .em-h3     { color: #00abf0 !important; }
+    .bubble-user { background-color: #00abf0 !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+    .bubble-bot  { background-color: #112240 !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+    .label-user  { color: #cce8ff !important; }
+    .label-bot   { color: #00abf0 !important; }
+    .em-footer   { color: rgba(255,255,255,0.35) !important; }
+    .em-followup { background-color: #112240 !important; }
+    .em-followup p { color: #ededed !important; }
+    .em-followup a { color: #00abf0 !important; }
+  }
+`;
+
 // Email to Haider — owner notification
 function ownerTranscriptHTML(userName, userEmail, messages) {
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" style="color-scheme: light; -webkit-color-scheme: light;">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
   <meta name="supported-color-schemes" content="light" />
-  <style>
-    :root { color-scheme: light !important; }
-    html, body { color-scheme: light !important; background-color: #081b29 !important; }
-    @media (prefers-color-scheme: dark) {
-      html, body { background-color: #081b29 !important; color: #ededed !important; }
-    }
-  </style>
+  <style>${EMAIL_STYLES}</style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #081b29;">
-    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; background-color: #081b29 !important; color: #ededed !important; padding: 30px; border-radius: 12px;">
-      <h2 style="color: #00abf0 !important; border-bottom: 2px solid #00abf0; padding-bottom: 10px; margin-top: 0;">
-        💬 New Chat Transcript
-      </h2>
+<body id="body" style="margin: 0; padding: 0; background-color: #081b29;">
+  <div class="em-wrap" style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; background-color: #081b29; color: #ededed; padding: 30px; border-radius: 12px;">
+    <h2 class="em-h2" style="color: #00abf0; border-bottom: 2px solid #00abf0; padding-bottom: 10px; margin-top: 0;">
+      💬 New Chat Transcript
+    </h2>
 
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background-color: #112240 !important; border-radius: 8px; padding: 16px;">
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important; width: 100px;">Name:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${userName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Email:</td>
-          <td style="padding: 8px 16px;"><a href="mailto:${userEmail}" style="color: #00abf0 !important;">${userEmail}</a></td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Time:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${formatTime()}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Messages:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${messages.filter(m => m.type === "user").length} from visitor</td>
-        </tr>
-      </table>
+    <table class="em-card" style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background-color: #112240; border-radius: 8px; padding: 16px;">
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0; width: 100px;">Name:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${userName}</td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Email:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;"><a href="mailto:${userEmail}" style="color: #00abf0;">${userEmail}</a></td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Time:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${formatTime()}</td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Messages:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${messages.filter(m => m.type === "user").length} from visitor</td>
+      </tr>
+    </table>
 
-      <h3 style="color: #00abf0 !important; margin-bottom: 16px;">Conversation</h3>
-      <table style="width: 100%; border-collapse: collapse;">
-        ${buildTranscriptRows(messages, userName)}
-      </table>
+    <h3 class="em-h3" style="color: #00abf0; margin-bottom: 16px;">Conversation</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+      ${buildTranscriptRows(messages, userName)}
+    </table>
 
-      <p style="margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.35) !important; text-align: center;">
-        Sent automatically from your portfolio chatbot · ${formatTime()}
-      </p>
-    </div>
+    <p class="em-footer" style="margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.35); text-align: center;">
+      Sent automatically from your portfolio chatbot · ${formatTime()}
+    </p>
+  </div>
 </body>
 </html>`;
 }
@@ -156,62 +188,56 @@ function ownerTranscriptHTML(userName, userEmail, messages) {
 // Email to visitor — their copy
 function visitorTranscriptHTML(userName, userEmail, messages) {
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" style="color-scheme: light; -webkit-color-scheme: light;">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
   <meta name="supported-color-schemes" content="light" />
-  <style>
-    :root { color-scheme: light !important; }
-    html, body { color-scheme: light !important; background-color: #081b29 !important; }
-    @media (prefers-color-scheme: dark) {
-      html, body { background-color: #081b29 !important; color: #ededed !important; }
-    }
-  </style>
+  <style>${EMAIL_STYLES}</style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #081b29;">
-    <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; background-color: #081b29 !important; color: #ededed !important; padding: 30px; border-radius: 12px;">
-      <h2 style="color: #00abf0 !important; border-bottom: 2px solid #00abf0; padding-bottom: 10px; margin-top: 0;">
-        💬 Your Conversation with Haider's Assistant
-      </h2>
+<body id="body" style="margin: 0; padding: 0; background-color: #081b29;">
+  <div class="em-wrap" style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto; background-color: #081b29; color: #ededed; padding: 30px; border-radius: 12px;">
+    <h2 class="em-h2" style="color: #00abf0; border-bottom: 2px solid #00abf0; padding-bottom: 10px; margin-top: 0;">
+      💬 Your Conversation with Haider's Assistant
+    </h2>
 
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background-color: #112240 !important; border-radius: 8px; padding: 16px;">
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important; width: 100px;">Name:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${userName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Email:</td>
-          <td style="padding: 8px 16px;"><a href="mailto:${userEmail}" style="color: #00abf0 !important;">${userEmail}</a></td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Time:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${formatTime()}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px 16px; font-weight: bold; color: #00abf0 !important;">Messages:</td>
-          <td style="padding: 8px 16px; color: #ededed !important;">${messages.filter(m => m.type === "user").length} from you</td>
-        </tr>
-      </table>
+    <table class="em-card" style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background-color: #112240; border-radius: 8px; padding: 16px;">
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0; width: 100px;">Name:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${userName}</td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Email:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;"><a href="mailto:${userEmail}" style="color: #00abf0;">${userEmail}</a></td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Time:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${formatTime()}</td>
+      </tr>
+      <tr>
+        <td class="em-label" style="padding: 8px 16px; font-weight: bold; color: #00abf0;">Messages:</td>
+        <td class="em-value" style="padding: 8px 16px; color: #ededed;">${messages.filter(m => m.type === "user").length} from you</td>
+      </tr>
+    </table>
 
-      <h3 style="color: #00abf0 !important; margin-bottom: 16px;">Conversation</h3>
-      <table style="width: 100%; border-collapse: collapse;">
-        ${buildTranscriptRows(messages, userName)}
-      </table>
+    <h3 class="em-h3" style="color: #00abf0; margin-bottom: 16px;">Conversation</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+      ${buildTranscriptRows(messages, userName)}
+    </table>
 
-      <div style="margin-top: 32px; background-color: #112240 !important; border-radius: 10px; padding: 20px;">
-        <p style="margin: 0 0 12px; font-weight: bold; color: #00abf0 !important;">Want to follow up? Reach Haider directly:</p>
-        <p style="margin: 4px 0; font-size: 14px; color: #ededed !important;">📧 <a href="mailto:me@haidersajjad.com" style="color: #00abf0 !important;">me@haidersajjad.com</a></p>
-        <p style="margin: 4px 0; font-size: 14px; color: #ededed !important;">💬 WhatsApp: <a href="https://wa.me/923420658137" style="color: #00abf0 !important;">+92 342 0658137</a></p>
-        <p style="margin: 4px 0; font-size: 14px; color: #ededed !important;">🌐 <a href="https://www.haidersajjad.com" style="color: #00abf0 !important;">www.haidersajjad.com</a></p>
-        <p style="margin: 4px 0; font-size: 14px; color: #ededed !important;">💼 <a href="https://www.upwork.com/freelancers/~011382bef96a02b3f6" style="color: #00abf0 !important;">Hire on Upwork</a></p>
-      </div>
-
-      <p style="margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.35) !important; text-align: center;">
-        This email was sent automatically from haidersajjad.com · ${formatTime()}
-      </p>
+    <div class="em-followup" style="margin-top: 32px; background-color: #112240; border-radius: 10px; padding: 20px;">
+      <p style="margin: 0 0 12px; font-weight: bold; color: #00abf0;">Want to follow up? Reach Haider directly:</p>
+      <p style="margin: 4px 0; font-size: 14px; color: #ededed;">📧 <a href="mailto:me@haidersajjad.com" style="color: #00abf0;">me@haidersajjad.com</a></p>
+      <p style="margin: 4px 0; font-size: 14px; color: #ededed;">💬 WhatsApp: <a href="https://wa.me/923420658137" style="color: #00abf0;">+92 342 0658137</a></p>
+      <p style="margin: 4px 0; font-size: 14px; color: #ededed;">🌐 <a href="https://www.haidersajjad.com" style="color: #00abf0;">www.haidersajjad.com</a></p>
+      <p style="margin: 4px 0; font-size: 14px; color: #ededed;">💼 <a href="https://www.upwork.com/freelancers/~011382bef96a02b3f6" style="color: #00abf0;">Hire on Upwork</a></p>
     </div>
+
+    <p class="em-footer" style="margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.35); text-align: center;">
+      This email was sent automatically from haidersajjad.com · ${formatTime()}
+    </p>
+  </div>
 </body>
 </html>`;
 }
